@@ -19,12 +19,14 @@ module.exports = function(app){
   app.get('/organization/:org_id/verifyadmin', verifyAdmin);
   app.get('/organization/:org_id', org_controller.renderOne);
   
+  app.put('/organization/user/:user_id', user_controller.editOneAsUser);
   app.post('/organization/accept_invitation', user_controller.acceptInvite);
   app.get('/organization/:org_id/create_invitation', verifyAdminMiddleware, user_controller.createInvite);
 
   app.post('/organization', org_controller.addOne);
   app.delete('/organization/:org_id', verifyAdminMiddleware, org_controller.removeOne);
-  app.patch('/organization/:org_id', verifyAdminMiddleware, org_controller.editOne);
+  app.put('/organization/:org_id/admin', verifyAdminMiddleware, org_controller.editOneAsAdmin);
+  app.put('/organization/:org_id', org_controller.editOneAsUser);
 
   app.post('/organization/:org_id/goals/', verifyAdminMiddleware, goal_controller.addOne);
   app.delete('/organization/:org_id/goals/:goal_id', verifyAdminMiddleware, goal_controller.removeOne);

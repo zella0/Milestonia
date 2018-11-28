@@ -50,6 +50,7 @@ export class GoalFormComponent implements OnInit {
       }).add(() => {
         this.submitted = true;
         this.loading = false;
+        this.dialogRef.close();
       })
     }else{
       this.submitted = true;

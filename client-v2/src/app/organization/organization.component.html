@@ -2,9 +2,32 @@
 <div class="content" *ngIf="isLoaded">
 
   <div class="user-list">
+
+    <!-- <div class="container-fluid">
+      <div class="row" *ngFor="let orgUser of orgUsers">
+        <div class="col-1">
+
+        </div>
+        <div class="col-" style="text-align: left">
+          <p>{{orgUser.username}}</p>
+        </div>
+        <div class="col-3">
+          <p>{{orgUser.points}}</p>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="container-fluid">
+      <div *ngFor="let orgUser of orgUsers" style="display: flex; justify-content: space-between; margin: 0.5rem 1.5rem">
+        <p>{{orgUser.username}}</p>
+        <p>{{orgUser.points}} XP</p>
+      </div>
+    </div>
+
+
     <div class="inv-btn" *ngIf="isAdmin">
-      
-      <div class="container-fluid" style="display: flex; justify-content: center; align-items: center; margin-top: 0.75rem" (click)="onClickInvite()">
+      <div class="container-fluid" style="display: flex; justify-content: center; align-items: center; margin-top: 0.75rem"
+        (click)="onClickInvite()">
         <div class="row">
           <div class="col-2">
             <mat-icon style="font-size: 5rem">group_add</mat-icon>
@@ -14,11 +37,8 @@
           </div>
         </div>
       </div>
-      
     </div>
-    <span *ngFor="let orgUser of orgUsers">
-      <p>{{orgUser.username}}</p>
-    </span>
+
   </div>
 
   <div class="main-content">
@@ -132,7 +152,7 @@
                 {{reward.reward_name}}
               </div>
               <div class="col-1" *ngIf="isAdmin" style="margin-right: 0; padding-right: 0">
-                <mat-icon class="crud-btn" style="color: yellow !important; margin-right: 7.5px; font-size: 2.8rem">edit</mat-icon>
+                <!-- <mat-icon class="crud-btn" style="color: yellow !important; margin-right: 7.5px; font-size: 2.8rem">edit</mat-icon> -->
                 <mat-icon class="crud-btn" style="color: red !important; font-size: 3rem" (click)="rewardOnDelete(reward.id)">delete_forever</mat-icon>
               </div>
 
@@ -178,40 +198,40 @@
         </span>
       </div>
 
-<!-- admin view begins -->
-<div class="container-fluid" *ngIf="isAdmin">
-  <div class="row">
-    <div class="col-md-6 goal-container" *ngFor="let goal of orgGoals">
-      <div class="goal-content">
-        <span class="progress-spinner">
-          <mat-progress-spinner color="accent" mode="determinate" value="100" strokeWidth="22" diameter="150">
-          </mat-progress-spinner>
-          <mat-progress-spinner color="accent" mode="determinate" [value]="(goal.goal_current_xp / goal.goal_total_xp * 100).toFixed(0)"
-            strokeWidth="22" diameter="150" class="main">
-          </mat-progress-spinner>
-          <p class="goal-percentage">{{ (goal.goal_current_xp / goal.goal_total_xp * 100).toFixed(0) }}%</p>
-        </span>
-
-        <div class="goal-info">
-          <p class="goal-name">{{goal.goal_name}}</p>
-          <p class="goal-xp">{{goal.goal_total_xp}} <span style="font-size: 0.5rem">XP</span></p>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</div>
-<!-- admin view ends -->
-
-<!-- normal view begins -->
-      <div class="container-fluid" *ngIf="!isAdmin">
+      <!-- admin view begins -->
+      <div class="container-fluid" *ngIf="isAdmin">
         <div class="row">
-<div class="col-md-6 goal-container" *ngFor="let goal of orgGoals" (click)="openEditGoalDialog(goal)">
+          <div class="col-md-6 goal-container" *ngFor="let goal of orgGoals">
             <div class="goal-content">
               <span class="progress-spinner">
                 <mat-progress-spinner color="accent" mode="determinate" value="100" strokeWidth="22" diameter="150">
                 </mat-progress-spinner>
-                <mat-progress-spinner color="accent" mode="determinate" [value]="(goal.goal_current_xp / goal.goal_total_xp * 100).toFixed(0)" strokeWidth="22" diameter="150" class="main">
+                <mat-progress-spinner color="accent" mode="determinate" value="0" strokeWidth="22" diameter="150" class="main">
+                </mat-progress-spinner>
+                <!-- <p class="goal-percentage">{{ (goal.goal_current_xp / goal.goal_total_xp * 100).toFixed(0) }}%</p> -->
+              </span>
+
+              <div class="goal-info">
+                <p class="goal-name">{{goal.goal_name}}</p>
+                <p class="goal-xp">{{goal.goal_total_xp}} <span style="font-size: 0.5rem">XP</span></p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- admin view ends -->
+
+      <!-- normal view begins -->
+      <div class="container-fluid" *ngIf="!isAdmin">
+        <div class="row">
+          <div class="col-md-6 goal-container" *ngFor="let goal of orgGoals" (click)="openEditGoalDialog(goal)">
+            <div class="goal-content">
+              <span class="progress-spinner">
+                <mat-progress-spinner color="accent" mode="determinate" value="100" strokeWidth="22" diameter="150">
+                </mat-progress-spinner>
+                <mat-progress-spinner color="accent" mode="determinate" [value]="(goal.goal_current_xp / goal.goal_total_xp * 100).toFixed(0)"
+                  strokeWidth="22" diameter="150" class="main">
                 </mat-progress-spinner>
                 <p class="goal-percentage">{{ (goal.goal_current_xp / goal.goal_total_xp * 100).toFixed(0) }}%</p>
               </span>
@@ -225,7 +245,7 @@
           </div>
         </div>
       </div>
-<!-- normal view ends -->
+      <!-- normal view ends -->
     </div>
   </div>
 </div>

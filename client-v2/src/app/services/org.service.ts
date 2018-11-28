@@ -5,6 +5,7 @@ import { MatDialogRef, MatSnackBar } from '@angular/material';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { Organization } from '../models/organization.model';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 
 @Injectable({
@@ -14,6 +15,7 @@ export class OrgService {
   public orgs: Organization[];
   public detailedOrg;
   public isAdmin = false;
+  public curUser;
 
   url = 'http://localhost:8000';
 
@@ -21,7 +23,10 @@ export class OrgService {
     private http: HttpClient,
     private router: Router,
     public snackBar: MatSnackBar,
-  ) { }
+  ) { 
+    const helper = new JwtHelperService();
+    this.curUser = helper.decodeToken(localStorage.getItem('token'));
+  }
 
   verifyAdmin() {
     return this.http.get(`${this.url}/organization/${this.detailedOrg.org[0].id}/verifyadmin`, {
@@ -31,7 +36,7 @@ export class OrgService {
     })
   }
 
-  fetchInviteLink(){
+  fetchInviteLink() {
     return this.http.get(`${this.url}/organization/${this.detailedOrg.org[0].id}/create_invitation`, {
       headers: new HttpHeaders().set('token', localStorage.getItem('token') || 'invalid token')
     }).map((response) => {
@@ -74,6 +79,7 @@ export class OrgService {
       headers: new HttpHeaders().set('token', localStorage.getItem('token') || 'invalid token')
     }).map((org) => {
       this.detailedOrg = org;
+      console.log(org)
       return org;
     })
   }
@@ -108,28 +114,91 @@ export class OrgService {
         });
         return org;
       } else {
-        console.log(org)
-        console.log(this.detailedOrg.org_goal)
         this.detailedOrg.org_goal.push(org[0])
-        console.log(this.detailedOrg.org_goal)
         this.snackBar.open('New goal is successfully created!', 'Close', {
           duration: 1000,
         });
+
       }
+    })
+  }
+
+  updateOrgPts(orgPts) {
+    return this.http.put(`${this.url}/organization/${this.detailedOrg.org[0].id}`, orgPts, {
+      headers: new HttpHeaders().set('token', localStorage.getItem('token') || 'invalid token')
+    })
+  }
+
+  // goal pts to user pts = user pts
+  updateCurUserPts(goalPts){
+    return this.http.put(`${this.url}/organization/user/${this.curUser.user.id}`, goalPts, {
+      headers: new HttpHeaders().set('token', localStorage.getItem('token') || 'invalid token')
     })
   }
 
   updateGoal(goalBody) {
     return this.http.put(`${this.url}/organization/user_goals/${goalBody.goal_id}`, goalBody, {
       headers: new HttpHeaders().set('token', localStorage.getItem('token') || 'invalid token')
-    }).map((asf) => {
-      this.detailedOrg.org_goal.map((goal)=>{
-        if(goal.id === goalBody.goal_id){
-          goal.goal_current_xp = goalBody.goal_current_xp;
+    }).map(() => {
+      this.detailedOrg.org_goal.map((goal) => {
+        if (goal.id === goalBody.goal_id) {
+
+          let curXP = goal.goal_current_xp;
+          let totalXP = goal.goal_total_xp;
+
+          // cur === total to cur < total
+          // then minus total xp to org's current xp
+          if (curXP === totalXP) {
+            curXP = goalBody.goal_current_xp;
+            if (curXP < totalXP) {
+              this.detailedOrg.org[0].org_current_pts -= totalXP;
+              let orgUpdatedObj = {
+                org_current_pts: this.detailedOrg.org[0].org_current_pts
+              }
+              this.updateOrgPts(orgUpdatedObj).subscribe().add(()=>{
+                this.detailedOrg.org_users.map((user)=>{
+                  if (user.user_id === this.curUser.user.id){
+                    user.points -= totalXP;
+                    let userUpdatedObj = {
+                      points: user.points 
+                    }
+                    this.updateCurUserPts(userUpdatedObj).subscribe();
+                  }
+                })
+
+              })
+              console.log('org minus points')
+            }
+          // cur < total to cur === total
+          // then add total xp to org's current xp
+          }  
+            if (curXP < totalXP) {
+              curXP = goalBody.goal_current_xp;
+              if (curXP === totalXP) {
+                this.detailedOrg.org[0].org_current_pts += totalXP;
+                let orgUpdatedObj = {
+                  org_current_pts: this.detailedOrg.org[0].org_current_pts
+                }
+                let userUpdatedObj = {
+                  points: totalXP
+                }
+                this.updateOrgPts(orgUpdatedObj).subscribe().add(()=>{
+                  this.detailedOrg.org_users.map((user) => {
+                    if (user.user_id === this.curUser.user.id) {
+                      user.points += totalXP;
+                      let userUpdatedObj = {
+                        points: user.points
+                      }
+                      this.updateCurUserPts(userUpdatedObj).subscribe();
+                    }
+                  })
+                })
+                console.log('org plus points');
+              }
+            }
+          goal.goal_current_xp = curXP;
         }
       })
-      // console.log(this.detailedOrg.org_goal)
-      // console.log(asf)
     })
   }
 

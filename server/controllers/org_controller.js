@@ -42,7 +42,7 @@ module.exports = {
         })
       })
   },
-  editOne: (req, res) => {
+  editOneAsAdmin: (req, res) => {
     knex('organization')
       .where('id', req.params.org_id)
       .update({
@@ -60,6 +60,20 @@ module.exports = {
         })
       })
   },
+  editOneAsUser: (req, res) => {
+    knex('organization')
+      .where('id', req.params.org_id)
+      .update({
+        org_current_pts: req.body.org_current_pts
+      })
+      .then((response) => {
+        res.json(response);
+      }).catch((err) => {
+        res.json({
+          message: 'Failed to update selected organization.'
+        })
+      })
+  },
   renderOne: (req, res) => {
     let promiseArr = [];
 
@@ -70,16 +84,19 @@ module.exports = {
     let goalPromise = knex('goal')
       .where('goal.org_id', req.params.org_id)
       .join('user_goals_progress', 'user_goals_progress.goal_id', 'goal.id')
+      .orderBy('start_date', 'asc')
     promiseArr.push(goalPromise);
 
     let rewardPromise = knex('reward')
-      .where('reward.org_id', req.params.org_id);
+      .where('reward.org_id', req.params.org_id)
+      .orderBy('pts_required', 'asc');
     promiseArr.push(rewardPromise);
 
     let userPromise = knex('user')
       .join('user_has_org', 'user_has_org.user_id', 'user.id')
       .select('user_id', 'username', 'isAdmin', 'points')
       .where('user_has_org.org_id', req.params.org_id)
+      .orderBy('points', 'desc')
     promiseArr.push(userPromise);
 
     Promise.all(promiseArr)

@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
+import { JwtModule } from '@auth0/angular-jwt';
 
 // services dependencies
 import { AuthService } from './services/auth.service';
@@ -72,6 +73,7 @@ import 'hammerjs';
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    JwtModule,
 
     // Material modules
     MatFormFieldModule,
@@ -93,6 +95,7 @@ import 'hammerjs';
     MatNativeDateModule,
     MatSliderModule,
     ClipboardModule,
+    
 
   ],
   providers: [AuthService, AuthGuard, OrgService, MatDatepickerModule],

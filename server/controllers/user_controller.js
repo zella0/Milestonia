@@ -35,25 +35,25 @@ module.exports = {
   },
   register: (req, res) => {
     hasher.hash(req.body)
-    .then((user)=>{
-      knex('user')
-      .insert(user)
-      .then(()=>{
-        res.json({
-          message: 'User has been sucessfully created!'
-        });
-      }).catch((err)=>{
-        let errMsg;
-        if(err.constraint.includes('email_unique')){
-          errMsg = 'Email already exists!'
-        }else if(err.constraint.includes('username_unique')){
-          errMsg = 'Username already exists!'
-        }
-        res.json({ 
-          err: errMsg
-        });
+      .then((user) => {
+        knex('user')
+          .insert(user)
+          .then(() => {
+            res.json({
+              message: 'User has been sucessfully created!'
+            });
+          }).catch((err) => {
+            let errMsg;
+            if (err.constraint.includes('email_unique')) {
+              errMsg = 'Email already exists!'
+            } else if (err.constraint.includes('username_unique')) {
+              errMsg = 'Username already exists!'
+            }
+            res.json({
+              err: errMsg
+            });
+          })
       })
-    })
   },
   createInvite: (req, res) => {
     let token = jwt.sign({
@@ -61,7 +61,9 @@ module.exports = {
     }, 'inv', {
       expiresIn: 600
     });
-    res.json({ invite_code: token})
+    res.json({
+      invite_code: token
+    })
   },
   acceptInvite: (req, res) => {
     jwt.verify(req.body.invitation_code, 'inv', (err, decoded) => {
@@ -76,35 +78,51 @@ module.exports = {
       console.log(req.decoded);
       // register the new user to the current org
       knex('user_has_org')
-      .insert({
-        isAdmin: false,
-        user_id: req.decoded.user.id,
-        org_id: Number(decoded.org_id)
-      }).catch(()=> res.json({ message: 'Invalid user' }))
-      .then(()=>{
-      // generate all existing goals to the new user
-        return knex('goal')
-        .then((goalsReponse)=>{
-          console.log(goalsReponse, 'asf')
-          goalsReponse.map((goalItem)=>{
-            knex('user_goals_progress')
-            .insert({
-              user_id: req.decoded.user.id,
-              goal_id: goalItem.id
-            }).catch((err)=> console.log(err))
-            .then(()=>{
-              res.json({
-                 message: 'You have successfully joined!',
-                 org_id: Number(decoded.org_id)
-             }).catch((err) => res.json({
-               org_id: Number(decoded.org_id)
-             }))
+        .insert({
+          isAdmin: false,
+          user_id: req.decoded.user.id,
+          org_id: Number(decoded.org_id)
+        }).catch(() => res.json({
+          message: 'Invalid user'
+        }))
+        .then(() => {
+          // generate all existing goals to the new user
+          return knex('goal')
+            .then((goalsReponse) => {
+              console.log(goalsReponse, 'asf')
+              goalsReponse.map((goalItem) => {
+                knex('user_goals_progress')
+                  .insert({
+                    user_id: req.decoded.user.id,
+                    goal_id: goalItem.id
+                  }).catch((err) => console.log(err))
+                  .then(() => {
+                    res.json({
+                      message: 'You have successfully joined!',
+                      org_id: Number(decoded.org_id)
+                    }).catch((err) => res.json({
+                      org_id: Number(decoded.org_id)
+                    }))
+                  })
+              })
             })
-          })
-        })
-      }).catch(() => res.json({
-        message: 'You have failed to joined (already joined)'
-      }))
+        }).catch(() => res.json({
+          message: 'You have failed to joined (already joined)'
+        }))
     })
-  }
+  },
+  editOneAsUser: (req, res) => {
+    knex('user')
+      .where('id', req.params.user_id)
+      .update({
+        points: req.body.points
+      },'points')
+      .then((response) => {
+        res.json(response);
+      }).catch((err) => {
+        res.json({
+          message: 'Failed to update user points'
+        })
+      })
+  },
 }

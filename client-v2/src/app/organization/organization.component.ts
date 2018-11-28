@@ -5,7 +5,6 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 
 import { RewardFormComponent } from '../reward-form/reward-form.component';
 import { GoalFormComponent } from '../goal-form/goal-form.component';
-
 import { ClipboardService } from 'ngx-clipboard'
 import { EditGoalFormComponent } from '../edit-goal-form/edit-goal-form.component';
 
@@ -33,8 +32,6 @@ export class OrganizationComponent implements OnInit {
   ) {
   }
 
-
-
   ngOnInit() {
     this.route.params.subscribe((params) => {
       this.isAdmin = false;
@@ -44,15 +41,14 @@ export class OrganizationComponent implements OnInit {
         this.orgGoals = org.org_goal;
         this.orgRewards = org.org_reward;
       }).add(() => {
-        // console.log(this.orgGoals)
-        console.log('before verify', this.isAdmin);
+        // console.log('before verify', this.isAdmin);
         this.orgService.verifyAdmin().subscribe((response) => {
           if (response['isAdmin']) {
             this.isAdmin = true;
           }else{
             this.isAdmin = false;
           }
-          console.log('after verify', this.isAdmin);
+          // console.log('after verify', this.isAdmin);
         }).add(() => {
           this.isLoaded = true;
         })
