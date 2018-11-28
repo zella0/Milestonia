@@ -1,0 +1,55 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="goalCreateFormGroup" style="display: flex; flex-direction: column;">
+  <mat-form-field appearance="outline" color="accent">
+    <mat-label>Goal name</mat-label>
+    <input matInput formControlName="goal_name" type="text" required>
+    <mat-icon matSuffix>info</mat-icon>
+    <mat-hint *ngIf="!goalCreateFormGroup.value.goal_name.length && submitted">
+      <i>
+        This field is required
+      </i>
+    </mat-hint>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" color="accent">
+    <mat-label>Goal XP</mat-label>
+    <input matInput formControlName="goal_total_xp" type="number" required>
+    <mat-icon matSuffix>star_border</mat-icon>
+    <mat-hint *ngIf="!this.goalCreateFormGroup.value.goal_total_xp && submitted">
+      <i>
+        This field is required
+      </i>
+    </mat-hint>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" color="accent">
+    <mat-label>Starting date</mat-label>
+    <input matInput [matDatepicker]="start_date" type="text" formControlName="start_date" required>
+    <mat-datepicker-toggle matSuffix [for]="start_date"></mat-datepicker-toggle>
+    <mat-datepicker #start_date></mat-datepicker>
+    <mat-hint *ngIf="!this.goalCreateFormGroup.value.start_date && submitted">
+      <i>
+        This field is required
+      </i>
+    </mat-hint>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" color="accent">
+    <mat-label>Finish date</mat-label>
+    <input matInput [matDatepicker]="finish_date" type="text" formControlName="finish_date" required>
+    <mat-datepicker-toggle matSuffix [for]="finish_date"></mat-datepicker-toggle>
+    <mat-datepicker #finish_date></mat-datepicker>
+    <mat-hint *ngIf="!this.goalCreateFormGroup.value.finish_date && submitted">
+      <i>
+        This field is required
+      </i>
+    </mat-hint>
+  </mat-form-field>
+
+  <button type='submit' mat-flat-button color="accent">
+    <span>
+      Continue&nbsp;
+      <mat-progress-spinner *ngIf="loading" class="example-margin" color="accent" mode="indeterminate" value="50"
+        diameter="24"></mat-progress-spinner>
+    </span>
+  </button>
+</form>

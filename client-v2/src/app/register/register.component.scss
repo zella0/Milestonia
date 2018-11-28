@@ -1,0 +1,19 @@
+.register-form {
+  min-width: 0px;
+  max-width: 40rem;
+  width: 100%;
+
+  .firstAndLastName {
+    display: flex;
+    width: 50%;
+
+    .first-name {
+      padding-right: 2rem;
+    }
+  }
+
+}
+
+.register-full-width {
+  width: 100%;
+}

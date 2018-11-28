@@ -1,0 +1,46 @@
+  .sidenav {
+    height: 100%;
+    /* Full-height: remove this if you want "auto" height */
+    position: fixed;
+    /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1;
+    /* Stay on top */
+    top: 0;
+    /* Stay at the top */
+    left: 0;
+    overflow-x: hidden;
+    /* Disable horizontal scroll */
+    padding: 0 1rem;
+    background-color: #21222c;
+    display: block;
+
+    a,
+    button {
+      display: block;
+      background-color: var(--color-primary-light-1);
+      margin-top: 1rem;
+      background-size: cover;
+      background-position: 50% 50%;
+      background-repeat: no-repeat;
+      text-decoration: none;
+    }
+
+    .addBtn {
+      background: transparent;
+      border: 1px dashed grey;
+
+      mat-icon {
+        color: rgb(209, 209, 209);
+        display: inline-block;
+        width: 100%;
+        line-height: 2rem;
+        font-size: 4rem;
+        text-align: center;
+      }
+    }
+
+  }
+
+  .sidenav a:hover {
+    // background-color: #f1f1f1;
+  }

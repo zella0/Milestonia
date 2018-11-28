@@ -1,0 +1,231 @@
+.content {
+  margin-left: 7.5rem;
+  height: 100%;
+
+  .user-list {
+    height: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 7.5rem;
+    overflow-x: hidden;
+    padding: 1rem 0;
+    background-color: #313241;
+    color: white;
+    display: block;
+    width: 22.5rem; // asdf
+    text-align: center;
+
+    .inv-btn {
+      position: fixed;
+      bottom: 0;
+      width: 22.5rem; //asdf
+      background-color: #4b4d61;
+      height: 6rem;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+  }
+
+  .main-content {
+    margin-left: 22.5rem;
+
+    height: 100%;
+
+    .title {
+      position: relative;
+      font-size: 4.5rem;
+      font-weight: 100;
+      text-transform: uppercase;
+    }
+
+    .title-goal {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 1rem;
+
+
+      span {
+        color: #59D7FF;
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+
+        p {
+          transform: translateY(-3px);
+          margin-right: 1rem;
+        }
+      }
+
+      span:hover {
+        opacity: 0.75;
+      }
+    }
+
+    .title::after {
+      position: absolute;
+      content: '';
+      height: 1px;
+      margin: 0 auto;
+      left: 0;
+      right: 0;
+      width: 100%;
+      bottom: 5px;
+      background: white;
+    }
+
+    .org-overview {
+      padding: 0 2.5rem;
+      color: white;
+
+      mat-accordion {
+        mat-expansion-panel {
+
+          .crud-btn {
+            cursor: pointer;
+          }
+
+          .crud-btn:hover {
+            opacity: 0.75;
+          }
+
+          background: transparent !important;
+          box-shadow: none;
+
+          mat-panel-title {
+            float: left;
+            color: #59D7FF;
+          }
+
+          p {
+            float: right;
+            color: #35FF02;
+            font-size: 1.75rem;
+          }
+
+          mat-list {
+            width: 100%;
+          }
+
+          mat-list * {
+            color: white !important;
+          }
+
+          mat-list-item {
+            .add-reward-row {
+              margin-top: 1rem;
+              padding-right: 0;
+              margin-left: 3.65rem;
+
+              p {
+                color: #35FF02 !important;
+                transform: translateY(3px);
+                font-weight: 200;
+              }
+            }
+          }
+
+          mat-divider {
+            background-color: white;
+          }
+        }
+      }
+
+
+      mat-progress-bar {
+        margin-top: 2rem;
+        height: 2rem;
+        border-radius: 0.5rem;
+      }
+
+      ::ng-deep .mat-progress-bar-fill::after {
+        background-image: linear-gradient(to right, rgb(22, 109, 0), rgb(51, 255, 0));
+      }
+
+      ::ng-deep .mat-progress-bar-buffer {
+        background: #E4E8EB;
+      }
+
+      .rewards-n-pts {
+        margin-top: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+
+        a {
+          text-decoration: none;
+          color: #59D7FF;
+        }
+
+        p {
+          // font-weight: 400;
+          color: #35FF02;
+          font-size: 1.75rem;
+        }
+      }
+
+    }
+
+    .goal-container {
+      height: 26rem;
+      padding: 2rem;
+
+      .goal-content {
+        padding: 3rem 1.5rem;
+        height: 100%;
+        border: 1px solid #546E90;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        ::ng-deep circle {
+          stroke: rgb(142, 154, 163);
+        }
+
+        .progress-spinner {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+
+          .main {
+            ::ng-deep circle {
+              stroke: rgb(12, 223, 23);
+            }
+
+            z-index: 2;
+            position: absolute;
+            bottom: 0;
+            filter:drop-shadow(0 1rem 1.25rem green);
+          }
+
+          .goal-percentage {
+            position: absolute;
+            font-size: 2rem;
+          }
+
+
+        }
+
+        .goal-info {
+          display: flex;
+          flex-direction: column;
+          margin-left: 2.5rem;
+          font-size: 3.3rem;
+          font-weight: 200;
+
+          .goal-name{
+            margin: 0;
+            padding: 0;
+          }
+
+          .goal-xp {
+            margin: 0;
+            padding: 0;
+            color: #69f0ae;
+          }
+        }
+      }
+    }
+  }
+}

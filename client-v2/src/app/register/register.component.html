@@ -1,0 +1,68 @@
+<div class="entry-container" *ngIf="loaded">
+  <mat-card>
+    <form class="register-form entry-form" (ngSubmit)="onRegister()" [formGroup]="registerFormGroup">
+
+      <mat-form-field class="register-full-width" appearance="fill" color="accent">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" autofocus required>
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-hint *ngIf="!registerFormGroup.value.email.length && submitted">
+          <i>This field is required</i>
+        </mat-hint>
+
+      </mat-form-field>
+
+      <mat-form-field class="register-full-width" appearance="fill" color="accent">
+        <mat-label>Username</mat-label>
+        <mat-icon matSuffix>account_circle</mat-icon>
+        <input matInput formControlName="username" type="text" required>
+        <mat-hint *ngIf="!registerFormGroup.value.username.length && submitted">
+          <i>This field is required</i>
+        </mat-hint>
+      </mat-form-field>
+
+      <span class="firstAndLastName">
+        <mat-form-field class="register-full-width first-name" appearance="fill" color="accent">
+          <mat-label>First Name</mat-label>
+          <input matInput formControlName="first_name" type="text" required>
+          <mat-icon matSuffix>info</mat-icon>
+          <mat-hint *ngIf="!registerFormGroup.value.first_name.length && submitted">
+            <i>This field is required</i>
+          </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="register-full-width" appearance="fill" color="accent">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="last_name" type="text" required>
+          <mat-icon matSuffix>info</mat-icon>
+          <mat-hint *ngIf="!registerFormGroup.value.last_name.length && submitted">
+            <i>This field is required</i>
+          </mat-hint>
+        </mat-form-field>
+      </span>
+
+      <mat-form-field class="register-full-width" appearance="fill" color="accent">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password" required>
+        <mat-icon matSuffix>lock</mat-icon>
+        <mat-hint *ngIf="!registerFormGroup.value.password.length && submitted">
+          <i>This field is required</i>
+          <!-- <i>Password must have at least 6 characters</i> -->
+        </mat-hint>
+
+      </mat-form-field>
+
+      <button type='submit' mat-flat-button color="accent">
+        <span>
+          Continue&nbsp;
+          <mat-progress-spinner *ngIf="loading" class="example-margin" color="accent" mode="indeterminate" value="50"
+            diameter="24"></mat-progress-spinner>
+        </span>
+      </button>
+      <span>
+        <a routerLink="/login">Already have an account?</a>
+      </span>
+    </form>
+
+  </mat-card>
+</div>

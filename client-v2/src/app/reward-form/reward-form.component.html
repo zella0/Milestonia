@@ -1,0 +1,31 @@
+<form class=" org-form" (ngSubmit)="onSubmit()" [formGroup]="rewardFormGroup" style="display: flex; flex-direction: column;">
+  <mat-form-field appearance="outline" color="accent">
+    <mat-label>Reward name</mat-label>
+    <input matInput formControlName="reward_name" type="text" required>
+    <mat-icon matSuffix>info</mat-icon>
+    <mat-hint *ngIf="!rewardFormGroup.value.reward_name.length && submitted">
+      <i>
+        This field is required
+      </i>
+    </mat-hint>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" color="accent">
+    <mat-label>Reward points</mat-label>
+    <input matInput formControlName="pts_required" type="number" required>
+    <mat-icon matSuffix>star_border</mat-icon>
+    <mat-hint *ngIf="!this.rewardFormGroup.value.pts_required && submitted">
+      <i>
+        This field is required
+      </i>
+    </mat-hint>
+  </mat-form-field>
+
+  <button type='submit' mat-flat-button color="accent">
+    <span>
+      Continue&nbsp;
+      <mat-progress-spinner *ngIf="loading" class="example-margin" color="accent" mode="indeterminate" value="50"
+        diameter="24"></mat-progress-spinner>
+    </span>
+  </button>
+</form>

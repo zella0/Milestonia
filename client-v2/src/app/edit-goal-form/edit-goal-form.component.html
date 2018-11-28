@@ -1,0 +1,16 @@
+<!-- <p>{{ data.goal_current_xp / data.goal_total_xp}}</p> -->
+
+<h1 style="text-align: center">Goal status</h1>
+<div style="display: flex">
+<mat-slider [(ngModel)]="data.goal_current_xp" [min]="0" [max]="data.goal_total_xp" [thumbLabel]="true"
+  style="width: 50rem;"
+  ></mat-slider>
+</div>
+
+<button mat-flat-button color="accent" style="width: 100%" (click)="onUpdateGoal()">
+  <span>
+    Continue&nbsp;
+    <mat-progress-spinner *ngIf="loading" class="example-margin" color="accent" mode="indeterminate" value="50"
+      diameter="24"></mat-progress-spinner>
+  </span>
+</button>

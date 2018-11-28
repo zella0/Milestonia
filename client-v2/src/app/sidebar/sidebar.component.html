@@ -1,0 +1,9 @@
+<div class="sidenav">
+  <a mat-fab routerLinkActive="active" [routerLink]="['/organization', org.id]" [ngStyle]="{ 'background-image': 'url(' + org.icon_img + ')'}"
+    *ngFor="let org of orgs" (click)="onOrgClick(org)">
+    <span style="text-transform: uppercase; color: white; font-weight: 600; font-size: 1.6rem" *ngIf="!org.icon_img">{{this.shortenOrgName(org.org_name)}}</span>
+  </a>
+  <button mat-fab class="addBtn" (click)="openDialog()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
